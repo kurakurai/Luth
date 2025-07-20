@@ -1,6 +1,7 @@
 base_model: "Qwen/Qwen3-0.6B"
 
 output_dir: "trained_model/luth"
+hf_use_auth_token: true
 hub_model_id: "kurakurai/Luth-openhermes-fr"
 hub_strategy: "end"
 
