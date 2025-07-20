@@ -12,6 +12,10 @@ checkpoints/
 .venv-train/
 .venv-eval/
 datasets/
+last_run_prepared/
+wandb/
+axolotl*
+trained_model/
 
 # C extensions
 *.so

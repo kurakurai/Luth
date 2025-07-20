@@ -22,7 +22,10 @@ env-train:
 	}
 	@echo "Setting up training environment..."
 	@uv venv $(TRAIN_VENV) --python $(PYTHON_VERSION) --no-project
-	@uv pip install -r requirements-train.txt --python $(TRAIN_VENV)/bin/python
+	@echo "Installing build dependencies..."
+	@uv pip install setuptools wheel build --python $(TRAIN_VENV)/bin/python
+	@uv pip install torch==2.6.0 --python $(TRAIN_VENV)/bin/python
+	@uv pip install --no-build-isolation -r requirements-train.txt --python $(TRAIN_VENV)/bin/python
 	@echo "Training environment ready."
 
 # Create and set up evaluation environment
@@ -38,7 +41,7 @@ env-eval:
 
 # Run supervised fine-tuning
 sft:
-	@$(TRAIN_VENV)/bin/python $(SFT_SCRIPT) --config $(SFT_CONFIG)
+	@$(TRAIN_VENV)/bin/accelerate launch $(SFT_SCRIPT) --config $(SFT_CONFIG)
 
 # Run evaluation
 eval:

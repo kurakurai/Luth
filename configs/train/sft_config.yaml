@@ -1,7 +1,13 @@
 base_model: "Qwen/Qwen3-0.6B"
-deepspeed: configs/train/zero1.json # Multi-GPU training config (deepspeed)
-flash_attention: true
-trust_remote_code: true
+
+output_dir: "trained_model/luth"
+hub_model_id: "kurakurai/Luth-openhermes-fr"
+hub_strategy: "end"
+
+deepspeed: configs/train/zero1.json # Multi-GPU training config (deepspeed
+
+xformers_attention: false # Enable xformers attention or packing may cause data contamination
+flash_attention: false
 train_on_inputs: false
 sample_packing: true
 chunked_cross_entropy: true
@@ -16,7 +22,7 @@ bf16: true
 max_grad_norm: 0.1
 num_epochs: 3
 saves_per_epoch: 1
-logging_steps: 5
+logging_steps: 1
 
 # lora_r: 16
 # lora_alpha: 32
@@ -28,10 +34,13 @@ logging_steps: 5
 
 # Batch size per gpu = micro_batch_size * gradient_accumulation_steps
 gradient_accumulation_steps: 4
-micro_batch_size: 2
+micro_batch_size: 4
 # eval_batch_size: 4
 
 use_wandb: true
+wandb_project: "Kurakura AI"
+wandb_name: luth-run-qwen3-0.6b
+
 chat_template: "tokenizer_default"
 datasets:
   - path: "datasets/openhermes-fr.jsonl"
