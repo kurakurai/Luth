@@ -34,20 +34,20 @@ python src/eval/eval.py --config 'configs/eval/eval_config.yaml'
 
 ## 3. Training
 
-You can modify the training configuration in the `sft_config.yaml` file.
+You can modify the training configuration in the `sft_config.yaml` file. To enable multi-GPU training, prefix the `make` command with `CUDA_VISIBLE_DEVICES=0,1`.
 
 ```bash
 # To run the CLI commands
 make env-train
 source .venv-train/bin/activate
-python src/train/sft.py --config 'configs/train/sft_config.yaml'
+accelerate launch src/train/sft.py --config 'configs/train/sft_config.yaml'
 ```
 
 | Task        | Make Command       | Equivalent CLI Command                                                                                                                                               | Default Values                                                                 |
 |-------------|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
-| Run SFT   | `make sft`       | `python src/train/sft.py --config SFT_CONFIG`                                                                                 | `SFT_CONFIG=configs/train/sft_config.yaml`                     |
+| Run SFT   | `make sft`       | `accelerate launch src/train/sft.py --config SFT_CONFIG`                                                                                 | `SFT_CONFIG=configs/train/sft_config.yaml`                     |
 
-⚠️ We use [Axolotl](https://github.com/axolotl-ai-cloud/axolotl) for training.
+⚠️ We use [Axolotl](https://github.com/axolotl-ai-cloud/axolotl) for training. Includes support for Flash Attention.
 
 ## 4. Results
 
