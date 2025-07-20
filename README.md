@@ -18,7 +18,7 @@ That's it, you can now run any command you want!
 
 Custom French evals supported: `IFEval-fr`, `GPQA-Diamond-fr`, `BBH-fr`, `Math-HARD-fr`, `BoolQ-fr`, `MMLU-fr`, `MuSR-fr`, `Hellaswag-fr`
 
-You can modify the evaluation configuration in the `eval_config.yaml` file.
+You can modify the evaluation configuration in the `eval_config.yaml` file. Also don't forget to set your `HF_TOKEN`.
 ```bash
 # To run the CLI commands
 make env-eval

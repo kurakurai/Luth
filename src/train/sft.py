@@ -24,7 +24,7 @@ def main(args):
     # Drop long samples from the dataset that overflow the max sequence length
     dataset_meta = load_datasets(cfg=cfg)
 
-    cfg.max_steps = 100
+    # cfg.max_steps = 100
 
     model, tokenizer, peft_config, processor = setup_model_and_tokenizer(cfg)
     train_dataset = dataset_meta.train_dataset

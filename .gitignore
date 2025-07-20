@@ -11,6 +11,7 @@ results/
 checkpoints/
 .venv-train/
 .venv-eval/
+datasets/
 
 # C extensions
 *.so

@@ -14,33 +14,36 @@ SFT_CONFIG  ?= configs/train/sft_config.yaml
 
 .PHONY: env-train env-eval eval sft clean
 
+# Create and set up training environment
 env-train:
 	@command -v uv >/dev/null 2>&1 || { \
 		echo "Installing uv..."; \
 		curl -LsSf https://astral.sh/uv/install.sh | sh; \
 	}
 	@echo "Setting up training environment..."
-	@uv venv $(TRAIN_VENV) --python $(PYTHON_VERSION)
-	@uv pip install --python $(TRAIN_VENV) -e ".[train]"
+	@uv venv $(TRAIN_VENV) --python $(PYTHON_VERSION) --no-project
+	@uv pip install -r requirements-train.txt --python $(TRAIN_VENV)/bin/python
 	@echo "Training environment ready."
 
+# Create and set up evaluation environment
 env-eval:
 	@command -v uv >/dev/null 2>&1 || { \
 		echo "Installing uv..."; \
 		curl -LsSf https://astral.sh/uv/install.sh | sh; \
 	}
 	@echo "Setting up eval environment..."
-	@uv venv $(EVAL_VENV) --python $(PYTHON_VERSION)
-	@uv pip install --python $(EVAL_VENV) -e ".[eval]"
+	@uv venv $(EVAL_VENV) --python $(PYTHON_VERSION) --no-project
+	@uv pip install -r requirements-eval.txt --python $(EVAL_VENV)/bin/python
 	@echo "Evaluation environment ready."
 
+# Run supervised fine-tuning
 sft:
-	@. $(TRAIN_VENV)/bin/activate && python $(SFT_SCRIPT) \
-		--config $(SFT_CONFIG)
+	@$(TRAIN_VENV)/bin/python $(SFT_SCRIPT) --config $(SFT_CONFIG)
 
+# Run evaluation
 eval:
-	@. $(EVAL_VENV)/bin/activate && python $(EVAL_SCRIPT) \
-		--config $(EVAL_CONFIG)
+	@$(EVAL_VENV)/bin/python $(EVAL_SCRIPT) --config $(EVAL_CONFIG)
 
+# Clean virtual environments
 clean:
-	rm -rf $(TRAIN_VENV) $(EVAL_VENV)
+	rm -rf $(TRAIN_VENV) $(EVAL_VENV) .venv

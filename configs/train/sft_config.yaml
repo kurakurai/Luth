@@ -1,12 +1,13 @@
 base_model: "Qwen/Qwen3-0.6B"
 deepspeed: configs/train/zero1.json # Multi-GPU training config (deepspeed)
+flash_attention: true
+trust_remote_code: true
+train_on_inputs: false
 sample_packing: true
 chunked_cross_entropy: true
 learning_rate: 0.00001
-sequence_len: 16384
-micro_batch_size: 1
-gradient_accumulation_steps: 2
-gradient_checkpointing: true
+sequence_len: 16384  # larger sequence length improves packing efficiency for more tokens/sec
+gradient_checkpointing: true # tradeoff reduced VRAM for increased time
 optimizer: "adamw_torch_8bit"
 lr_scheduler: "cosine"
 warmup_ratio: 0.2
@@ -15,28 +16,28 @@ bf16: true
 max_grad_norm: 0.1
 num_epochs: 3
 saves_per_epoch: 1
+logging_steps: 5
 
-lora_r: 16
-lora_alpha: 32
-lora_target_modules:
-  - "q_proj"
-  - "k_proj"
-  - "v_proj"
-  - "o_proj"
+# lora_r: 16
+# lora_alpha: 32
+# lora_target_modules:
+#   - "q_proj"
+#   - "k_proj"
+#   - "v_proj"
+#   - "o_proj"
 
 # Batch size per gpu = micro_batch_size * gradient_accumulation_steps
-gradient_accumulation_steps: 1
-micro_batch_size: 1
-eval_batch_size: 1
+gradient_accumulation_steps: 4
+micro_batch_size: 2
+# eval_batch_size: 4
 
 use_wandb: true
-
-logging_steps: 5
 chat_template: "tokenizer_default"
 datasets:
-  - path: "<dataset_id>"
+  - path: "datasets/openhermes-fr.jsonl"
     type: "chat_template"
     split: "train"
+
 eot_tokens:
   - "<|im_end|>"
 dataloader_prefetch_factor: 8
