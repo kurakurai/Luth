@@ -2,7 +2,7 @@ models:
   - model: Qwen/Qwen3-0.6B
     parameters:
       weight: 0.5
-  - model: kurakurai/Luth-openhermes-fr
+  - model: kurakurai/Luth-OH-Qwen3-0.6B
     parameters:
       weight: 0.5
 merge_method: linear

@@ -16,6 +16,7 @@ last_run_prepared/
 wandb/
 axolotl*
 trained_model/
+merged-output
 
 # C extensions
 *.so

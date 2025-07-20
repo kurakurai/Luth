@@ -57,7 +57,7 @@ We use [Mergekit](https://github.com/arcee-ai/mergekit/) for model merging.
 # To run model merging
 make env
 source .venv/bin/activate
-mergekit-yaml configs/mergekit/merge_linear.yaml ./merged-output --cuda'
+mergekit-yaml configs/mergekit/merge_linear.yaml ./merged-output --cuda
 ```
 
 ## 5. Results
