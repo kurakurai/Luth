@@ -2,7 +2,7 @@ PYTHON_VERSION := 3.11
 
 # Define virtualenv paths
 TRAIN_VENV := .venv-train
-EVAL_VENV  := .venv-eval
+EVAL_VENV  := .venv
 
 # Scripts
 EVAL_SCRIPT := src/eval/eval.py
@@ -12,7 +12,7 @@ SFT_SCRIPT  := src/train/sft.py
 EVAL_CONFIG ?= configs/eval/eval_config.yaml
 SFT_CONFIG  ?= configs/train/sft_config.yaml
 
-.PHONY: env-train env-eval eval sft clean
+.PHONY: env-train env eval sft clean
 
 # Create and set up training environment
 env-train:
@@ -29,14 +29,14 @@ env-train:
 	@echo "Training environment ready."
 
 # Create and set up evaluation environment
-env-eval:
+env:
 	@command -v uv >/dev/null 2>&1 || { \
 		echo "Installing uv..."; \
 		curl -LsSf https://astral.sh/uv/install.sh | sh; \
 	}
 	@echo "Setting up eval environment..."
 	@uv venv $(EVAL_VENV) --python $(PYTHON_VERSION) --no-project
-	@uv pip install -r requirements-eval.txt --python $(EVAL_VENV)/bin/python
+	@uv pip install -r requirements.txt --python $(EVAL_VENV)/bin/python
 	@echo "Evaluation environment ready."
 
 # Run supervised fine-tuning

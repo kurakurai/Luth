@@ -8,7 +8,7 @@ _Using [`uv`](https://github.com/astral-sh/uv) for fast and reliable dependency 
 
 ```bash
 # Basic environment setup
-make env-eval   # Set up environment with evaluation dependencies
+make env        # Set up environment for evaluation, mergekit, etc. (excluding training)
 make env-train  # Set up environment with training dependencies
 make clean      # Delete all .venv
 ```
@@ -21,8 +21,8 @@ Custom French evals supported: `IFEval-fr`, `GPQA-Diamond-fr`, `BBH-fr`, `Math-H
 You can modify the evaluation configuration in the `eval_config.yaml` file. Also don't forget to set your `HF_TOKEN`.
 ```bash
 # To run the CLI commands
-make env-eval
-source .venv-eval/bin/activate
+make env
+source .venv/bin/activate
 python src/eval/eval.py --config 'configs/eval/eval_config.yaml'
 ```
 
@@ -49,9 +49,20 @@ accelerate launch src/train/sft.py --config 'configs/train/sft_config.yaml'
 
 ⚠️ We use [Axolotl](https://github.com/axolotl-ai-cloud/axolotl) for training. Includes support for Flash Attention.
 
-## 4. Results
+## 4. Model Merging
 
-### 4.1 Non-Thinking mode
+We use [Mergekit](https://github.com/arcee-ai/mergekit/) for model merging.
+
+```bash
+# To run model merging
+make env
+source .venv/bin/activate
+mergekit-yaml configs/mergekit/merge_linear.yaml ./merged-output --cuda'
+```
+
+## 5. Results
+
+### 5.1 Non-Thinking mode
 
 | Benchmark                 | Qwen3-0.6B | Qwen2.5-0.5B-Instruct | SmolLM2-360M-Instruct |  LFM2-700M   |  LFM2-350M   |
 |---------------------------|------------|-----------------------|-----------------------|--------------|--------------|
