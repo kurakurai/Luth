@@ -1,12 +1,14 @@
 model:
   model_name: "Qwen/Qwen3-0.6B"
   dtype: "bfloat16"
+  gpu_memory_utilization: 0.8 
 
 model_parameters:
   temperature: 0.0
 
 extras:
-  enable_thinking: false
+  enable_thinking: true
+  answer_token: "</think>"  
   use_chat_template: true
   system_prompt: "Vous êtes un assistant utile."
   num_runs: 1
@@ -15,11 +17,11 @@ extras:
   push_to_hub: false
 
 tasks:
-  # - "community|ifeval-fr|0|1"
-  # - "community|gpqa-diamond-fr|0|1"
-  # - "community|bbh-fr|0|1"
-  # - "community|hellaswag-fr|0|1"
+  - "community|ifeval-fr|0|1"
+  - "community|gpqa-diamond-fr|0|1"
+  - "community|bbh-fr|0|1"
+  - "community|hellaswag-fr|0|1"
   - "community|boolq-fr|0|1"
-  # - "community|mmlu_fr|0|1"
-  # - "community|musr-fr|0|1"
-  # - "community|math-hard-fr|0|1" # 4 shots under the hood
+  - "community|mmlu_fr|0|1"
+  - "community|musr-fr|0|1"
+  - "community|math-hard-fr|0|1" # 4 shots under the hood

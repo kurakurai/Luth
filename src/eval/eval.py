@@ -5,6 +5,8 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..",
 from patch_lighteval.patch import patch_reasoning
 
 patch_reasoning()
+
+
 from lighteval.logging.evaluation_tracker import EvaluationTracker
 from lighteval.models.vllm.vllm_model import VLLMModelConfig
 from lighteval.pipeline import ParallelismManager, Pipeline, PipelineParameters
@@ -59,6 +61,18 @@ def main(args):
     model_parameters_yaml = config.get("model_parameters", {})
     extras_yaml = config.get("extras", {})
     tasks_yaml = config.get("tasks", [])
+    os.environ["answer_token"] = extras_yaml.get("answer_token", "")
+    
+    if not extras_yaml.get("use_chat_template"):
+        extras_yaml["use_chat_template"] = False
+    
+    else : 
+        os.environ["enable_thinking"] = str(extras_yaml.get("enable_thinking"))
+
+    if extras_yaml.get("enable_thinking") and not extras_yaml.get("answer_token"):
+        raise ValueError(
+            "enable_thinking is set to True, but answer_token is not provided in the config."
+        )
 
     # Prepare model configuration
     config_kwargs = dict(model_yaml)

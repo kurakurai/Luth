@@ -1,4 +1,5 @@
 from importlib import import_module
+import importlib
 import inspect
 import textwrap
 import sys
@@ -210,7 +211,7 @@ def patch_reasoning():
         pipeline_module.Pipeline = patched_pipeline
         sys.modules["lighteval.pipeline"].Pipeline = patched_pipeline
 
-        print("Lighteval patching successful.")
+        print("Lighteval enable_thinking successfully patched.")
 
     except Exception as e:
         raise RuntimeError(f"Failed to patch enable_thinking: {str(e)}")

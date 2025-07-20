@@ -1,7 +1,8 @@
 model:
   model_name: "Qwen/Qwen3-0.6B"
   dtype: "bfloat16"
-
+  gpu_memory_utilization: 0.9 #defaut is 0.9 decrease if you have OOM issues
+  
 model_parameters:
   temperature: 0.7
   top_k: 50
@@ -10,6 +11,7 @@ model_parameters:
 
 extras:
   enable_thinking: true
+  answer_token: "" # for reasoning tasks we need to specify the answer token like <answer>
   use_chat_template: true
   system_prompt: "Vous êtes un assistant utile."
   num_runs: 1
