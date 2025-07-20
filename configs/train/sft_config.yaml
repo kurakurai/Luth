@@ -4,10 +4,9 @@ output_dir: "trained_model/luth"
 hub_model_id: "kurakurai/Luth-openhermes-fr"
 hub_strategy: "end"
 
-deepspeed: configs/train/zero1.json # Multi-GPU training config (deepspeed
+deepspeed: configs/train/zero1.json # Multi-GPU training config
 
-xformers_attention: false # Enable xformers attention or packing may cause data contamination
-flash_attention: false
+flash_attention: true
 train_on_inputs: false
 sample_packing: true
 chunked_cross_entropy: true
