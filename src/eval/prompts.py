@@ -315,6 +315,15 @@ Résous clairement et efficacement le problème de mathématiques suivant. La de
     )
 
 
+def prompt_arc_fr(line, task_name: str = None):
+    return Doc(
+        task_name=task_name,
+        query=f"Question: {line['question']}\nAnswer:",
+        choices=[f" {c}" for c in line["choices"]],
+        gold_index=["A", "B", "C", "D"].index(line["answerKey"]),
+    )
+
+
 # math-fr prompt function
 NL_PROMPT = """Problème:
 Déterminer le domaine de l'expression $\\frac{\\sqrt{x-2}}{\\sqrt{5-x}}$.

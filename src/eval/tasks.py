@@ -10,6 +10,7 @@ from lighteval.metrics.normalizations import (
     LogProbPMINorm,
     LogProbTokenNorm,
 )
+import lighteval.tasks.default_prompts as default_prompts
 from lighteval.utils.language import Language
 from lighteval.tasks.templates.utils.formulation import MCFFormulation
 import prompts as custom_prompt
@@ -26,18 +27,35 @@ metrics = [
     metrics_module.prefix_quasi_exact_match,
 ]
 
+# Arc-Challenge-fr task
+arc_challenge_fr_task = LightevalTaskConfig(
+    name="arc_challenge_fr",
+    suite=["community"],
+    prompt_function=custom_prompt.prompt_arc_fr,
+    hf_repo="manu/french_bench_arc_challenge",
+    hf_subset="ARC-Challenge",
+    hf_avail_splits=["train", "test"],
+    evaluation_splits=["test"],
+    few_shots_split="train",
+    few_shots_select="random",
+    generation_size=1 if not enable_thinking else 4096,
+    metric=[Metrics.loglikelihood_acc, Metrics.loglikelihood_acc_norm_nospace],
+    stop_sequence=[],
+    trust_dataset=True,
+    version=0,
+)
 
 # AIME24-fr task
 aime24_fr_task = LightevalTaskConfig(
     name="aime24_fr",
-    suite=["lighteval"],
+    suite=["community"],
     prompt_function=custom_prompt.prompt_aime_fr,
     hf_repo="kurakurai/aime_2024_fr",
     hf_subset="default",
     hf_avail_splits=["train"],
     evaluation_splits=["train"],
-    few_shots_split=None,
-    few_shots_select=None,
+    few_shots_split="train",
+    few_shots_select="random",
     generation_size=8192,
     metric=[
         custom_metric.math_fr_pass_at_1_1n,
@@ -81,7 +99,7 @@ ifeval_fr_task = LightevalTaskConfig(
 
 # GPQA-Diamond-fr task
 gpqa_diamond_fr_task = LightevalTaskConfig(
-    name="gpqa_diamond_fr",
+    name="gpqa_fr:diamond",
     suite=["community"],
     prompt_function=custom_prompt.gpqa_diamond_fr_instruct,
     hf_repo="le-leadboard/gpqa-fr",
@@ -670,8 +688,63 @@ bbh_word_sorting_community = LightevalTaskConfig(
     version=0,
 )
 
+# Adjusted English Tasks
+math_500_fixed = LightevalTaskConfig(
+    name="math_500",
+    suite=["community"],
+    prompt_function=default_prompts.math_500,
+    hf_repo="HuggingFaceH4/MATH-500",
+    hf_subset="default",
+    hf_avail_splits=["test"],
+    evaluation_splits=["test"],
+    few_shots_split=None,
+    few_shots_select=None,
+    generation_size=8192,
+    metric=[
+        Metrics.math_pass_at_1_1n,
+    ],
+    version=2,
+)
+
+gpqa_diamond_instruct_lighteval_fixed = LightevalTaskConfig(
+    name="gpqa:diamond",
+    suite=["community"],
+    prompt_function=default_prompts.gpqa_instruct,
+    hf_repo="Idavidrein/gpqa",
+    hf_subset="gpqa_diamond",
+    hf_avail_splits=["train"],
+    evaluation_splits=["train"],
+    few_shots_split=None,
+    few_shots_select=None,
+    generation_size=8192,
+    metric=[
+        Metrics.gpqa_instruct_pass_at_1_1n,
+    ],
+    stop_sequence=[],
+    trust_dataset=True,
+    version=1,
+)
+
+aime24_fixed = LightevalTaskConfig(
+    name="aime24",
+    suite=["community"],
+    prompt_function=default_prompts.aime_prompt_fn,
+    hf_repo="HuggingFaceH4/aime_2024",
+    hf_subset="default",
+    hf_avail_splits=["train"],
+    evaluation_splits=["train"],
+    few_shots_split=None,
+    few_shots_select=None,
+    generation_size=8192,
+    metric=[
+        Metrics.math_pass_at_1_1n,
+    ],
+    version=2,
+)
+
 # STORE YOUR EVALS
 TASKS_TABLE = [
+    arc_challenge_fr_task,
     aime24_fr_task,
     math_500_fr_task,
     math_lvl5_fr_task,
@@ -710,4 +783,7 @@ TASKS_TABLE = [
     bbh_web_of_lies_community,
     bbh_word_sorting_community,
     hellaswag_fr_task,
+    math_500_fixed,
+    gpqa_diamond_instruct_lighteval_fixed,
+    aime24_fixed,
 ]

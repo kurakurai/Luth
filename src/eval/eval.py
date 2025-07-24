@@ -62,11 +62,11 @@ def main(args):
     extras_yaml = config.get("extras", {})
     tasks_yaml = config.get("tasks", [])
     os.environ["answer_token"] = extras_yaml.get("answer_token", "")
-    
+
     if not extras_yaml.get("use_chat_template"):
         extras_yaml["use_chat_template"] = False
-    
-    else : 
+
+    else:
         os.environ["enable_thinking"] = str(extras_yaml.get("enable_thinking"))
 
     if extras_yaml.get("enable_thinking") and not extras_yaml.get("answer_token"):
