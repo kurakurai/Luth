@@ -16,9 +16,9 @@ That's it, you can now run any command you want!
 
 ## 2. Evaluation
 
-Custom French evals supported: `IFEval-fr`, `GPQA-Diamond-fr`, `BBH-fr`, `Math-fr`, `BoolQ-fr`, `MMLU-fr`, `MuSR-fr`, `Hellaswag-fr`
+Many custom French evals are supported, check `configs/eval/all_fr_tasks.txt`.
 
-You can modify the evaluation configuration in the `eval_config.yaml` file. Also don't forget to set your `HF_TOKEN`.
+You can modify the evaluation configuration in the `eval_config.yaml` file. Also **don't forget** to set your `HF_TOKEN`.
 ```bash
 # To run the CLI commands
 make env
@@ -62,25 +62,25 @@ mergekit-yaml configs/mergekit/merge_linear.yaml ./merged-output --cuda
 
 ## 5. Results
 
-### 5.1 Non-Thinking mode
+### 5.1 Instruct mode
 
-| Benchmarks                | Qwen3-0.6B | Qwen2.5-0.5B-Instruct | SmolLM2-360M-Instruct |  LFM2-700M   |  LFM2-350M   |
-|---------------------------|------------|-----------------------|-----------------------|--------------|--------------|
-| IFEval-fr (prompt strict) |  **43.44** | 20.70                 | 20.89                 |              |              |
-| GPQA-Diamond-fr           |  **29.95** | 22.84                 | 28.43                 |              |              |
-| Math-fr                   |  **10.86** | 3.04                  |   1.17                |              |              |
-| BoolQ-fr                  |  **74.72** | 59.55                 |   26.97               |              |              |
-| MMLU-fr                   |  27.16     | **35.04**             |   26.14               |              |              |
-| MuSR-fr                   |  33.34     |   34.17               |   **36.41**           |              |              |
-| Hellaswag-fr              |  24.90     | **51.21**             |   32.78               |              |              |
-| IFEval-en (prompt strict) |  57.67     |                       |                       |              |              |
-| BoolQ-en                  |  70.06     |                       |                       |              |              |
-| MMLU-en                   |  36.79     |                       |                       |              |              |
-| ARC-Challenge             |  33.70     |                       |                       |              |              |
-| Hellaswag-en              |  42.91     |                       |                       |              |              |
-| GPQA-Diamond-en           |  -         |                       |                       |              |              |
-| Math-en                   |  -         |                       |                       |              |              |
- 
+| Benchmarks                | Qwen3-0.6B | Qwen2.5-0.5B-Instruct |  LFM2-700M   |  LFM2-350M   |
+|---------------------------|------------|-----------------------|--------------|--------------|
+| IFEval_fr (prompt strict) |  43.62     |                       |              |              |
+| GPQA_Diamond_fr           |  28.93     |                       |              |              |
+| Math_500_fr               |  29.40     |                       |              |              |
+| MMLU_fr                   |  27.16     |                       |              |              |
+| AIME_2024_fr              |  -         |                       |              |              |
+| Hellaswag_fr              |  25.11     |                       |              |              |
+| ARC_Challenge_fr          |  31.31     |                       |              |              |
+| IFEval_en (prompt strict) |  57.49     |                       |              |              |
+| GPQA_Diamond_en           |  29.80     |                       |              |              |
+| Math_500_en               |  45.00     |                       |              |              |
+| MMLU_en                   |  36.85     |                       |              |              |
+| AIME_2024_en              |  3.33      |                       |              |              |
+| Hellaswag_en              |  42.91     |                       |              |              |
+| ARC_Challenge_en          |  33.62     |                       |              |              |
+
 
 We used:
 - French bench: `temperature=0.0` and `system_prompt="Vous êtes un assistant utile."`.
