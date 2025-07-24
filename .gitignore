@@ -220,3 +220,9 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+
+#datas
+src/data/scholar-fr/pdf/
+src/data/scholar-fr/datas/
+src/data/scholar-fr/scripts/cleaned_json/
