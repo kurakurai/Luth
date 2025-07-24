@@ -287,7 +287,35 @@ def musr_fr(line, task_name: str = None):
     )
 
 
-# math-hard-fr prompt function
+def prompt_math_500_fr(line, task_name: str = None):
+    MATH_QUERY_TEMPLATE = """
+Résous le problème de mathématiques suivant de manière efficace et claire. La dernière ligne de ta réponse doit être au format suivant : 'Donc, la réponse finale est : $\\boxed{{RÉPONSE}}$. J’espère que c’est correct' (sans les guillemets), où RÉPONSE est simplement le nombre ou l’expression qui résout le problème. Raisonne étape par étape avant de répondre.
+
+{Question}
+""".strip()
+    return Doc(
+        task_name=task_name,
+        query=MATH_QUERY_TEMPLATE.format(Question=line["problem"]),
+        gold_index=0,
+        choices=[line["solution"]],
+    )
+
+
+def prompt_aime_fr(line, task_name: str = None):
+    MATH_QUERY_TEMPLATE = """
+Résous clairement et efficacement le problème de mathématiques suivant. La dernière ligne de ta réponse doit être au format suivant : 'Donc, la réponse finale est : $\\boxed{{RÉPONSE}}$. J’espère que c’est correct' (sans les guillemets), où RÉPONSE est simplement le nombre ou l’expression finale qui résout le problème. Réfléchis étape par étape avant de répondre.
+
+{Question}
+""".strip()
+    return Doc(
+        task_name=task_name,
+        query=MATH_QUERY_TEMPLATE.format(Question=line["problem"]),
+        choices=[line["answer"]],
+        gold_index=0,
+    )
+
+
+# math-fr prompt function
 NL_PROMPT = """Problème:
 Déterminer le domaine de l'expression $\\frac{\\sqrt{x-2}}{\\sqrt{5-x}}$.
 
@@ -336,9 +364,9 @@ Réponse finale : La réponse finale est $-\\frac{2}{3}$.
 """
 
 
-def prompt_math_hard_fr(line, task_name: str = None):
+def prompt_math_fr(line, task_name: str = None):
     """
-    Prompt function for the Math-Hard-fr task. With few-shot examples.
+    Prompt function for the Math-Fr task. With few-shot examples.
     """
     return Doc(
         task_name=task_name,

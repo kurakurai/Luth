@@ -20,19 +20,16 @@ extras:
 
 tasks:
 # French tasks
-  - "community|ifeval-fr|0|0"
-  - "community|gpqa-diamond-fr|0|0"
-  - "community|hellaswag-fr|0|0"
-  - "community|boolq-fr|0|0"
+  - "community|ifeval_fr|0|0"
+  - "community|gpqa_diamond_fr|0|0"
   - "community|mmlu_fr|0|0"
-  - "community|musr-fr|0|0"
-  - "community|math-hard-fr|0|0" # 4 shots under the hood
+  - "community|aime24_fr|0|0"
+  - "community|math_500_fr|0|0"
 
 # English tasks
   - "extended|ifeval|0|0"
-  - "leaderboard|hellaswag|0|0"
   - "leaderboard|mmlu|0|0"
-  - "helm|boolq|0|0"
-  - "leaderboard|arc:challenge|0|0"
-  # - "lighteval|gpqa:diamond|0|0" # Need to fix the metrics
-  # - "lighteval|math|0|0" # Need to fix the metrics
+  - "lighteval|gpqa:diamond|0|0" # Need to fix the metrics
+  - "lighteval|math_500|0|0" # Need to fix the metrics
+  - "lighteval|aime24|0|0" # Need to fix the metrics
+

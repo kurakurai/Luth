@@ -6,69 +6,23 @@ from lighteval.metrics.dynamic_metrics import (
     ExprExtractionConfig,
     IndicesExtractionConfig,
     LatexExtractionConfig,
-    compare_gold_target, 
+    compare_gold_target,
     extract_target_from_pred,
     get_extraction_regexes,
     multilingual_extractive_match_metric,
 )
 import numpy as np
-
 from lighteval.metrics.metrics_sample import ExactMatches
-import re
 from typing import Callable
 import os
-from aenum import Enum
 import numpy as np
-from lighteval.metrics.normalizations import (helm_normalizer)
-from lighteval.metrics.metrics import Metrics
+from lighteval.metrics.normalizations import helm_normalizer
 from lighteval.metrics.utils.metric_utils import (
-    Metric,
-    MetricGrouping,
     MetricCategory,
     MetricUseCase,
-    SampleLevelMetric
+    SampleLevelMetric,
 )
 
-
-# Metric for math-hard-fr task
-math_pass_fr_at_1_1n = SampleLevelMetric(
-    metric_name="math_pass_fr@1:1_samples",
-    sample_level_fn=PassAtK(
-        k=1,
-        n=1,
-        strip_strings=True,
-        # Extracting mathematical expressions and latex expressions
-        normalize_gold=lambda k: extract_target_from_pred(
-            k,
-            get_extraction_regexes(
-                formatted_doc=None,
-                target_types=[
-                    ExprExtractionConfig(),
-                    LatexExtractionConfig(boxed_match_priority=0),
-                ],
-                language=Language.FRENCH,
-            ),
-        ),
-        # Extracting mathematical expressions and latex expressions
-        normalize_pred=lambda k: extract_target_from_pred(
-            k,
-            get_extraction_regexes(
-                formatted_doc=None,
-                target_types=[
-                    ExprExtractionConfig(),
-                    LatexExtractionConfig(boxed_match_priority=0),
-                ],
-                language=Language.FRENCH,
-            ),
-        ),
-        # Uses sympy for comparison
-        sample_scoring_function=compare_gold_target,
-    ).compute,
-    category=MetricCategory.GENERATIVE_SAMPLING,
-    use_case=MetricUseCase.REASONING,
-    corpus_level_fn=np.mean,
-    higher_is_better=True,
-)
 
 # Metric for GPQA-Diamond-fr task
 gpqa_instruct_pass_fr_at_1_1n = SampleLevelMetric(
@@ -95,6 +49,39 @@ gpqa_instruct_pass_fr_at_1_1n = SampleLevelMetric(
     higher_is_better=True,
 )
 
+math_fr_pass_at_1_1n = SampleLevelMetric(
+    metric_name="math_fr_pass@1:1_samples",
+    sample_level_fn=PassAtK(
+        k=1,
+        n=1,
+        strip_strings=True,
+        # Extracting mathematical expressions and latex expressions
+        normalize_gold=lambda k: extract_target_from_pred(
+            k,
+            get_extraction_regexes(
+                formatted_doc=None,
+                target_types=[ExprExtractionConfig(), LatexExtractionConfig()],
+                language=Language.FRENCH,
+            ),
+        ),
+        # Extracting mathematical expressions and latex expressions
+        normalize_pred=lambda k: extract_target_from_pred(
+            k,
+            get_extraction_regexes(
+                formatted_doc=None,
+                target_types=[ExprExtractionConfig(), LatexExtractionConfig()],
+                language=Language.FRENCH,
+            ),
+        ),
+        # Uses sympy for comparison
+        sample_scoring_function=compare_gold_target,
+    ).compute,
+    category=MetricCategory.GENERATIVE_SAMPLING,
+    use_case=MetricUseCase.REASONING,
+    corpus_level_fn=np.mean,
+    higher_is_better=True,
+)
+
 
 class ExactMatchesThinking(ExactMatches):
     """
@@ -109,7 +96,9 @@ class ExactMatchesThinking(ExactMatches):
         normalize_pred: Callable[[str], str] | None = None,
         strip_strings: bool = False,
         type_exact_match: str = "full",
-        answer_token: str = os.environ.get("answer_token", ""),  # for reasoning tasks we need to specify the answer token like <answer> or end of thinking token "</thinking>" if no asnwer token is outputted
+        answer_token: str = os.environ.get(
+            "answer_token", ""
+        ),  # for reasoning tasks we need to specify the answer token like <answer> or end of thinking token "</thinking>" if no asnwer token is outputted
     ):
 
         super().__init__(
@@ -120,20 +109,20 @@ class ExactMatchesThinking(ExactMatches):
             type_exact_match=type_exact_match,
         )
         self.answer_token = answer_token
-    
-    
+
     def compute_one_item(
         self,
         gold: str,
         pred: str,
     ) -> float:
 
-        #extract the answer afte the answer token if it exists
+        # extract the answer afte the answer token if it exists
         if self.answer_token:
             if self.answer_token in pred:
                 pred = pred.split(self.answer_token, 1)[1]
 
         return super().compute_one_item(gold, pred)
+
 
 class MetricsThinking:
     exact_match = SampleLevelMetric(
@@ -160,7 +149,9 @@ class MetricsThinking:
 
     prefix_exact_match = SampleLevelMetric(
         metric_name="pem",
-        sample_level_fn=ExactMatchesThinking(strip_strings=True, type_exact_match="prefix").compute,
+        sample_level_fn=ExactMatchesThinking(
+            strip_strings=True, type_exact_match="prefix"
+        ).compute,
         category=MetricCategory.GENERATIVE,
         use_case=MetricUseCase.ACCURACY,
         corpus_level_fn=np.mean,
@@ -179,4 +170,3 @@ class MetricsThinking:
         corpus_level_fn=np.mean,
         higher_is_better=True,
     )
-
