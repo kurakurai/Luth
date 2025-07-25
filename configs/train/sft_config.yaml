@@ -1,9 +1,9 @@
-base_model: "Qwen/Qwen3-0.6B"
+base_model: "kurakurai/Qwen3-0.6B-Instruct"
 
 output_dir: "trained_model/luth"
 hf_use_auth_token: true
-hub_model_id: "kurakurai/Luth-openhermes-fr"
-hub_strategy: "end"
+hub_model_id: "kurakurai/Luth-scholar-fr"
+hub_strategy: "checkpoint"
 
 deepspeed: configs/train/zero1.json # Multi-GPU training config
 
@@ -35,7 +35,7 @@ logging_steps: 1
 
 # Batch size per gpu = micro_batch_size * gradient_accumulation_steps
 gradient_accumulation_steps: 4
-micro_batch_size: 4
+micro_batch_size: 6
 # eval_batch_size: 4
 
 use_wandb: true
@@ -44,9 +44,10 @@ wandb_name: luth-run-qwen3-0.6b
 
 chat_template: "tokenizer_default"
 datasets:
-  - path: "datasets/openhermes-fr.jsonl"
+  - path: "kurakurai/Scholar-fr"
     type: "chat_template"
-    split: "train"
+    split: "Scholar_all"
+    field_messages: conversations
 
 eot_tokens:
   - "<|im_end|>"

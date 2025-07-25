@@ -1,12 +1,12 @@
 model:
-  model_name: "Qwen/Qwen3-0.6B"
+  model_name: "kurakurai/Luth-0.6B-Scholar-0.5-v2"
   dtype: "bfloat16"
   gpu_memory_utilization: 0.9
-  max_model_length: 32768
+  max_model_length: 16384
 
 model_parameters:
   temperature: 0.0
-  max_new_tokens: 16384
+  max_new_tokens: 8192
 
 extras:
   enable_thinking: false

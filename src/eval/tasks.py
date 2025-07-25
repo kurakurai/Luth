@@ -56,7 +56,7 @@ aime24_fr_task = LightevalTaskConfig(
     evaluation_splits=["train"],
     few_shots_split="train",
     few_shots_select="random",
-    generation_size=8192,
+    generation_size=1024 if not enable_thinking else 8192,
     metric=[
         custom_metric.math_fr_pass_at_1_1n,
     ],
@@ -75,7 +75,7 @@ math_500_fr_task = LightevalTaskConfig(
     evaluation_splits=["test"],
     few_shots_split="train",
     few_shots_select="random",
-    generation_size=8192,
+    generation_size=1024 if not enable_thinking else 8192,
     stop_sequence=[],  # no stop sequence, will use eot token
     version="0.1",
 )
@@ -92,7 +92,7 @@ ifeval_fr_task = LightevalTaskConfig(
     evaluation_splits=["train"],
     few_shots_split="train",
     few_shots_select="random",
-    generation_size=8192,
+    generation_size=1024 if not enable_thinking else 8192,
     stop_sequence=[],  # no stop sequence, will use eot token
     version="0.1",
 )
@@ -108,7 +108,7 @@ gpqa_diamond_fr_task = LightevalTaskConfig(
     evaluation_splits=["train"],
     few_shots_split="train",
     few_shots_select="random",
-    generation_size=8192,
+    generation_size=1024 if not enable_thinking else 8192,
     metric=[
         custom_metric.gpqa_instruct_pass_fr_at_1_1n,
     ],
@@ -147,7 +147,7 @@ math_lvl5_fr_task = LightevalTaskConfig(
     evaluation_splits=["test"],
     few_shots_split="train",
     few_shots_select="random",
-    generation_size=8192,
+    generation_size=1024 if not enable_thinking else 8192,
     metric=[
         custom_metric.math_fr_pass_at_1_1n,
     ],
@@ -699,7 +699,7 @@ math_500_fixed = LightevalTaskConfig(
     evaluation_splits=["test"],
     few_shots_split=None,
     few_shots_select=None,
-    generation_size=8192,
+    generation_size=1024 if not enable_thinking else 8192,
     metric=[
         Metrics.math_pass_at_1_1n,
     ],
@@ -716,7 +716,7 @@ gpqa_diamond_instruct_lighteval_fixed = LightevalTaskConfig(
     evaluation_splits=["train"],
     few_shots_split=None,
     few_shots_select=None,
-    generation_size=8192,
+    generation_size=1024 if not enable_thinking else 8192,
     metric=[
         Metrics.gpqa_instruct_pass_at_1_1n,
     ],
@@ -735,7 +735,7 @@ aime24_fixed = LightevalTaskConfig(
     evaluation_splits=["train"],
     few_shots_split=None,
     few_shots_select=None,
-    generation_size=8192,
+    generation_size=1024 if not enable_thinking else 8192,
     metric=[
         Metrics.math_pass_at_1_1n,
     ],
