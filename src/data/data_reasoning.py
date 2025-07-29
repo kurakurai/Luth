@@ -10,6 +10,7 @@ from huggingface_hub import create_repo
 class DatasetBuilder:
     """Class to build a dataset with reasoning capabilities with Magistral."""
 
+    # Magistral-Small official system prompt
     SYS_PROMPT = """A user will ask you to solve a task. You must first draft your thinking process (inner monologue) until you have derived the final answer. Afterwards, write a self-contained summary of your thoughts (i.e. your summary should be succinct but contain all the critical steps you needed to reach the conclusion). You should use Markdown to format your response. Write both your thoughts and summary in the same language as the task posed by the user. NEVER use \boxed{} in your response.
 
         Your thinking process must follow the template below:
