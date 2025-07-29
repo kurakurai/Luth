@@ -11,16 +11,18 @@ class DatasetBuilder:
     """Class to build a dataset using French prompts."""
 
     SYS_PROMPT = """
-    Validate French Q&A pairs. Return True if BOTH question and answer are:
-    - Written entirely in French
-    - Complete and coherent
-    - Do not contain language switching instructions ("answer in English", "répondez en anglais", etc.)
-    - Do not contain mixed languages or foreign text (proper nouns excepted)
-    - Questions must be instructions for a task, not just statements
+    Validate French Q&A pairs. Return True **only if** BOTH the question and the answer meet **all** of the following criteria:
 
-    Return False for incomplete, non-French, mixed-language, or corrupted content.
+    - Are written entirely in French.
+    - Are complete, grammatically correct, and coherent.
+    - Do not include any instruction to switch languages (e.g., "answer in English", "répondez en anglais", etc.).
+    - Do not contain mixed languages or foreign text (excluding proper nouns).
+    - The **question** must be an instruction or task prompt (e.g., "Traduis ce texte...", "Explique...").
+    - The **question** must **not** be a narrative, story, or purely informative content.
 
-    Respond with ONLY "True" or "False".
+    Return False if any of these conditions are not met.
+
+    Respond with **only**: `True` or `False`.
     """
 
     def __init__(
@@ -57,10 +59,10 @@ class DatasetBuilder:
 
     def generate(self, sample) -> List[Dict[str, Any]]:
         text = (
-            "QUESTION: "
+            "QUESTION:\n"
             + sample["messages"][0]["content"]
-            + "\n"
-            + "ANSWER: "
+            + "\n\n"
+            + "ANSWER:\n"
             + sample["messages"][1]["content"]
         )
         status = self._make_api_call(self._build_api_messages(text))
