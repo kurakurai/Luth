@@ -12,9 +12,7 @@ from huggingface_hub import create_repo
 class DatasetBuilder:
     """Class to build a dataset using French prompts."""
 
-    SYS_PROMPT = (
-        """You are a helpful assistant. You must answer to the questions in French."""
-    )
+    SYS_PROMPT = """You are a helpful assistant that responds in French."""
 
     def __init__(
         self,
@@ -48,8 +46,8 @@ class DatasetBuilder:
                 continue
         raise RuntimeError("API call failed after 3 attempts")
 
-    def generate(self, dataset_sample) -> List[Dict[str, Any]]:
-        question = dataset_sample["messages"][0]["content"]
+    def generate(self, prompt) -> List[Dict[str, Any]]:
+        question = prompt
         answer = self._make_api_call(self._build_api_messages(question))
         return [
             {"role": "user", "content": question},
@@ -60,8 +58,16 @@ class DatasetBuilder:
 class PromptTranslation:
     """Class to translate prompts into French using a model API."""
 
-    SYS_PROMPT = """You are an expert at translating English text into French. Your task is to translate the provided text while maintaining the original meaning and context. Ensure that the translation is accurate, fluent, and natural in French. 
-    Output only the translated text in the same format as the input, preserving any special characters or formatting."""
+    SYS_PROMPT = """You are a professional French translator. Translate English text into natural, accurate French.
+
+    REQUIREMENTS:
+    - Preserve exact meaning, tone, and register of the original
+    - Use natural French syntax and idiomatic expressions
+    - Maintain all formatting (markdown, HTML, special characters, structure)
+    - Keep technical terms, code snippets, and proper nouns appropriately handled
+    - Ensure grammatical correctness and contemporary French usage
+
+    OUTPUT: Only the translated French text in identical format to the input."""
 
     def __init__(
         self,
@@ -74,7 +80,7 @@ class PromptTranslation:
     def _build_api_messages(self, prompt: str) -> List[Dict[str, Any]]:
         return [
             {"role": "system", "content": self.SYS_PROMPT},
-            {"role": "user", "content": prompt},
+            {"role": "user", "content": "PROMPT TO TRANSLATE:\n" + prompt},
         ]
 
     def _make_api_call(self, messages: List[Dict[str, Any]]) -> str:
@@ -84,7 +90,7 @@ class PromptTranslation:
                     model=self.model_name,
                     messages=messages,
                     temperature=0.7,
-                    max_tokens=2048,
+                    max_tokens=1024,
                     top_p=0.8,
                     extra_body={"chat_template_kwargs": {"enable_thinking": False}},
                 )
@@ -95,12 +101,10 @@ class PromptTranslation:
                 continue
         raise RuntimeError("API call failed after 3 attempts")
 
-    def generate(self, dataset_sample) -> List[Dict[str, Any]]:
+    def translate(self, dataset_sample) -> List[Dict[str, Any]]:
         prompt = dataset_sample["messages"][0]["content"]
         translation = self._make_api_call(self._build_api_messages(prompt))
-        return [
-            {"role": "user", "content": translation},
-        ]
+        return translation
 
 
 def get_client(base_url: str, api_key: str) -> openai.Client:
@@ -115,13 +119,13 @@ def translation_pipeline(
     ds_builder = PromptTranslation(client, model_name)
     translated_prompts = []
     with ThreadPoolExecutor(max_workers=num_workers) as executor:
-        futures = [executor.submit(ds_builder.generate, sample) for sample in dataset]
+        futures = [executor.submit(ds_builder.translate, sample) for sample in dataset]
         for future in tqdm(
-            as_completed(futures), total=len(futures), desc="Processing data"
+            as_completed(futures), total=len(futures), desc="Translating prompts"
         ):
             try:
                 result = future.result()
-                translated_prompts.append({"messages": result})
+                translated_prompts.append(result)
             except Exception as e:
                 print(f"Error: {e}")
     print(f"Generated dataset: {len(translated_prompts)} samples")
@@ -129,15 +133,18 @@ def translation_pipeline(
 
 
 def generation_pipeline(
-    dataset, client: openai.Client, model_name: str, num_workers: int
+    translated_prompts, client: openai.Client, model_name: str, num_workers: int
 ):
     """Generate a dataset."""
     ds_builder = DatasetBuilder(client, model_name)
     generated = []
     with ThreadPoolExecutor(max_workers=num_workers) as executor:
-        futures = [executor.submit(ds_builder.generate, sample) for sample in dataset]
+        futures = [
+            executor.submit(ds_builder.generate, prompt)
+            for prompt in translated_prompts
+        ]
         for future in tqdm(
-            as_completed(futures), total=len(futures), desc="Processing data"
+            as_completed(futures), total=len(futures), desc="Generating responses"
         ):
             try:
                 result = future.result()
@@ -182,7 +189,7 @@ if __name__ == "__main__":
         default="allenai/tulu-3-sft-personas-instruction-following",
     )
     parser.add_argument(
-        "--num_workers", type=int, default=16, help="Number of workers for generation."
+        "--num_workers", type=int, default=32, help="Number of workers for generation."
     )
     parser.add_argument(
         "--base_url",
