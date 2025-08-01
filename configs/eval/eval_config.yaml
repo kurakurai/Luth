@@ -23,7 +23,6 @@ tasks:
   - "community|ifeval_fr|0|0"
   - "community|gpqa_fr:diamond|0|0"
   - "community|mmlu_fr|0|0"
-  - "community|aime24_fr|0|0"
   - "community|math_500_fr|0|0"
   - "community|arc_challenge_fr|0|0"
   - "community|hellaswag_fr|0|0"
@@ -33,7 +32,5 @@ tasks:
   # - "leaderboard|mmlu|0|0"
   # - "community|gpqa:diamond|0|0"
   # - "community|math_500|0|0"
-  # - "community|aime24|0|0"
   # - "leaderboard|hellaswag|0|0"
   # - "leaderboard|arc:challenge|0|0"
-

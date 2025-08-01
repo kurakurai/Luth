@@ -1,10 +1,17 @@
-from huggingface_hub import create_repo, upload_folder
+from transformers import AutoTokenizer, AutoModelForCausalLM
+from huggingface_hub import create_repo
 
-repo_id = "kurakurai/Luth-0.6B-Scholar-0.5-v2"
-folder_path = "merged-output"
+# Define your repo and local folder
+repo_id = "kurakurai/Luth-0.6B-fr"
+folder_path = "trained_model/luth/checkpoint-1305"
 
-# Create the repo (does nothing if it already exists and `exist_ok=True`)
+# Create repo if it doesn't exist
 create_repo(repo_id=repo_id, repo_type="model", private=True, exist_ok=True)
 
-# Upload the folder
-upload_folder(repo_id=repo_id, folder_path=folder_path, repo_type="model")
+# Load the tokenizer and model from the local checkpoint
+tokenizer = AutoTokenizer.from_pretrained(folder_path)
+model = AutoModelForCausalLM.from_pretrained(folder_path, torch_dtype="bfloat16")
+
+# Push both to the Hub
+tokenizer.push_to_hub(repo_id)
+model.push_to_hub(repo_id)

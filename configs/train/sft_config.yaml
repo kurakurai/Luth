@@ -2,21 +2,23 @@ base_model: "kurakurai/Qwen3-0.6B-Instruct"
 
 output_dir: "trained_model/luth"
 hf_use_auth_token: true
-hub_model_id: "kurakurai/Luth-scholar-fr"
-hub_strategy: "checkpoint"
+hub_model_id: "kurakurai/Luth-0.6B-fr"
+hub_strategy: "end"
 
 deepspeed: configs/train/zero1.json # Multi-GPU training config
 
 flash_attention: true
 train_on_inputs: false
+train_on_eos: 'turn'
 sample_packing: true
 chunked_cross_entropy: true
-learning_rate: 0.00001
+learning_rate: 2e-5
 sequence_len: 16384  # larger sequence length improves packing efficiency for more tokens/sec
 gradient_checkpointing: true # tradeoff reduced VRAM for increased time
 optimizer: "adamw_torch_8bit"
 lr_scheduler: "cosine"
-warmup_ratio: 0.2
+warmup_ratio: 0.1
+weight_decay: 0.01
 bf16: true
 fp16: false
 tf32: false
@@ -24,6 +26,7 @@ max_grad_norm: 0.1
 num_epochs: 3
 saves_per_epoch: 1
 logging_steps: 1
+early_stopping_patience: 3
 
 # lora_r: 16
 # lora_alpha: 32
@@ -44,13 +47,20 @@ wandb_name: luth-run-qwen3-0.6b
 
 chat_template: "tokenizer_default"
 datasets:
+  - path: "kurakurai/tulu-3-persona-math-fr"
+    type: "chat_template"
+    split: "train"
+  - path: "kurakurai/tulu-3-persona-instruct-fr"
+    type: "chat_template"
+    split: "train"
+  - path: "kurakurai/luth-sft"
+    type: "chat_template"
+    split: "train"
   - path: "kurakurai/Scholar-fr"
     type: "chat_template"
     split: "Scholar_all"
     field_messages: conversations
 
-eot_tokens:
-  - "<|im_end|>"
 dataloader_prefetch_factor: 8
 dataloader_num_workers: 2
 dataloader_pin_memory: true
