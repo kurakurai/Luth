@@ -1,15 +1,15 @@
 model:
-  model_name: "Qwen/Qwen3-0.6B"
+  model_name: "kurakurai/Luth-0.6B-Scholar-0.5-v2"
   dtype: "bfloat16"
   gpu_memory_utilization: 0.9
-  max_model_length: 32768
+  max_model_length: 16384
 
 model_parameters:
   temperature: 0.0
-  max_new_tokens: 16384
+  max_new_tokens: 8192
 
 extras:
-  enable_thinking: true
+  enable_thinking: false
   answer_token: "</think>"  
   use_chat_template: true
   system_prompt: "Vous êtes un assistant utile."
@@ -20,19 +20,17 @@ extras:
 
 tasks:
 # French tasks
-  - "community|ifeval-fr|0|0"
-  - "community|gpqa-diamond-fr|0|0"
-  - "community|hellaswag-fr|0|0"
-  - "community|boolq-fr|0|0"
+  - "community|ifeval_fr|0|0"
+  - "community|gpqa_fr:diamond|0|0"
   - "community|mmlu_fr|0|0"
-  - "community|musr-fr|0|0"
-  - "community|math-hard-fr|0|0" # 4 shots under the hood
+  - "community|math_500_fr|0|0"
+  - "community|arc_challenge_fr|0|0"
+  - "community|hellaswag_fr|0|0"
 
 # English tasks
-  - "extended|ifeval|0|0"
-  - "leaderboard|hellaswag|0|0"
-  - "leaderboard|mmlu|0|0"
-  - "helm|boolq|0|0"
-  - "leaderboard|arc:challenge|0|0"
-  # - "lighteval|gpqa:diamond|0|0" # Need to fix the metrics
-  # - "lighteval|math|0|0" # Need to fix the metrics
+  # - "extended|ifeval|0|0"
+  # - "leaderboard|mmlu|0|0"
+  # - "community|gpqa:diamond|0|0"
+  # - "community|math_500|0|0"
+  # - "leaderboard|hellaswag|0|0"
+  # - "leaderboard|arc:challenge|0|0"
