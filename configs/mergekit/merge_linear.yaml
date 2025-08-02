@@ -1,9 +1,9 @@
 models:
-  - model: kurakurai/Luth-OH-Qwen3-0.6B
+  - model: kurakurai/Luth-0.6B-fr
     parameters:
-      weight: 0.2
-  - model: Qwen/Qwen3-0.6B
+      weight: 0.5
+  - model: kurakurai/Qwen3-0.6B-Instruct
     parameters:
-      weight: 0.8
+      weight: 0.5
 merge_method: linear
 dtype: bfloat16

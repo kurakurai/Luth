@@ -1,5 +1,5 @@
 model:
-  model_name: "kurakurai/Luth-0.6B-Scholar-0.5-v2"
+  model_name: "kurakurai/Luth-0.6B-checkpoint-2640"
   dtype: "bfloat16"
   gpu_memory_utilization: 0.9
   max_model_length: 16384
