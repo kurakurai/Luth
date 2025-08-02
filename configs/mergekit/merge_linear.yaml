@@ -1,8 +1,8 @@
 models:
-  - model: kurakurai/Qwen3-0.6B-Instruct
+  - model: kurakurai/Luth-0.6B-fr
     parameters:
       weight: 0.5
-  - model: kurakurai/Luth-0.6B-Scholar-checkpoint-136
+  - model: kurakurai/Qwen3-0.6B-Instruct
     parameters:
       weight: 0.5
 merge_method: linear

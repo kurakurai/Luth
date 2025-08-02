@@ -1,0 +1,16 @@
+slices:
+  - sources:
+      - model: kurakurai/Luth-0.6B-fr
+        layer_range: [0, 28]
+      - model: kurakurai/Qwen3-0.6B-Instruct
+        layer_range: [0, 28]
+merge_method: slerp
+base_model: kurakurai/Qwen3-0.6B-Instruct
+parameters:
+  t:
+    - filter: self_attn
+      value: [0, 0.5, 0.3, 0.7, 1]
+    - filter: mlp
+      value: [1, 0.5, 0.7, 0.3, 0]
+    - value: 0.5
+dtype: bfloat16

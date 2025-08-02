@@ -4,7 +4,6 @@ output_dir: "trained_model/luth"
 hf_use_auth_token: true
 hub_model_id: "kurakurai/Luth-0.6B-fr"
 hub_strategy: "end"
-
 deepspeed: configs/train/zero1.json # Multi-GPU training config
 
 flash_attention: true
@@ -24,9 +23,8 @@ fp16: false
 tf32: false
 max_grad_norm: 0.1
 num_epochs: 3
-saves_per_epoch: 1
+save_strategy: "epoch"
 logging_steps: 1
-early_stopping_patience: 3
 
 # lora_r: 16
 # lora_alpha: 32
@@ -60,6 +58,9 @@ datasets:
     type: "chat_template"
     split: "Scholar_all"
     field_messages: conversations
+  - path: "kurakurai/openhermes-fr-filtered"
+    type: "chat_template"
+    split: "train"
 
 dataloader_prefetch_factor: 8
 dataloader_num_workers: 2
