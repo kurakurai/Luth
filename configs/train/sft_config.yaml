@@ -1,9 +1,7 @@
-base_model: "kurakurai/Qwen3-0.6B-Instruct"
+base_model: "Qwen/Qwen3-0.6B"
 
 output_dir: "trained_model/luth"
-hf_use_auth_token: true
 hub_model_id: "kurakurai/Luth-0.6B-fr"
-hub_strategy: "end"
 deepspeed: configs/train/zero1.json # Multi-GPU training config
 
 flash_attention: true
@@ -65,3 +63,5 @@ datasets:
 dataloader_prefetch_factor: 8
 dataloader_num_workers: 2
 dataloader_pin_memory: true
+
+special_tokens:

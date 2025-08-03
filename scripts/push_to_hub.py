@@ -2,8 +2,8 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 from huggingface_hub import create_repo
 
 # Define your repo and local folder
-repo_id = "kurakurai/Luth-0.6B-fr"
-folder_path = "trained_model/luth/checkpoint-2640"
+repo_id = "kurakurai/Luth-0.6B-checkpoint-2643-eos"
+folder_path = "trained_model/luth/checkpoint-2643"
 
 # Create repo if it doesn't exist
 create_repo(repo_id=repo_id, repo_type="model", private=True, exist_ok=True)
