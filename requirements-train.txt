@@ -3,3 +3,4 @@ pydantic
 wandb==0.19.11
 mpi4py==4.1.0
 accelerate
+flash_attn==2.7.4.post1

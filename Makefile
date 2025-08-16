@@ -27,7 +27,7 @@ env-train:
 	@uv pip install torch==2.6.0 --python $(TRAIN_VENV)/bin/python
 	@echo "Installing base requirements..."
 	@uv pip install -r requirements-train.txt --python $(TRAIN_VENV)/bin/python
-	@uv pip install --no-build-isolation axolotl[deepspeed,flash-attn]>=0.12.0 --python $(TRAIN_VENV)/bin/python
+	@uv pip install --no-build-isolation axolotl[deepspeed]>=0.12.0 --python $(TRAIN_VENV)/bin/python
 	@echo "Training environment ready."
 
 # Create and set up evaluation environment

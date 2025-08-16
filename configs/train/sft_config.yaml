@@ -60,6 +60,9 @@ datasets:
   - path: "kurakurai/luth-sft"
     type: "chat_template"
     split: "luth_tulu3_persona_instruct"
+  - path: "kurakurai/luth-sft"
+    type: "chat_template"
+    split: "luth_smoltalk2"
 
 
 eot_tokens:
