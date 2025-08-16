@@ -27,10 +27,7 @@ env-train:
 	@uv pip install torch==2.6.0 --python $(TRAIN_VENV)/bin/python
 	@echo "Installing base requirements..."
 	@uv pip install -r requirements-train.txt --python $(TRAIN_VENV)/bin/python
-	@echo "Installing Axolotl + flash-attn + transformers (manual deps)..."
-	@uv pip install --no-build-isolation --no-deps axolotl[deepspeed]==0.12.1 --python $(TRAIN_VENV)/bin/python
-	@uv pip install --no-build-isolation --no-deps flash-attn==2.7.4.post1 --python $(TRAIN_VENV)/bin/python
-	@uv pip install --upgrade --no-deps --force-reinstall git+https://github.com/huggingface/transformers.git --python $(TRAIN_VENV)/bin/python
+	@uv pip install --no-build-isolation axolotl[deepspeed,flash-attn]>=0.12.0 --python $(TRAIN_VENV)/bin/python
 	@echo "Training environment ready."
 
 # Create and set up evaluation environment

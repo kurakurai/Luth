@@ -62,6 +62,8 @@ datasets:
     split: "luth_tulu3_persona_instruct"
 
 
+eot_tokens:
+  - "<|im_end|>"
 dataloader_prefetch_factor: 8
 dataloader_num_workers: 2
 dataloader_pin_memory: true

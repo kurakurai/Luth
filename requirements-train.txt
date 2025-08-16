@@ -3,10 +3,3 @@ pydantic
 wandb==0.19.11
 mpi4py==4.1.0
 accelerate
-regex
-tokenizers
-safetensors
-addict
-bitsandbytes
-peft
-trl
