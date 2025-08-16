@@ -1,4 +1,4 @@
-base_model: "LiquidAI/LFM2-350M"
+base_model: "LiquidAI/LFM2-700M"
 
 output_dir: "trained_model/"
 deepspeed: configs/train/zero1.json # Multi-GPU training config
@@ -47,6 +47,9 @@ datasets:
     split: "luth_scholar"
   - path: "kurakurai/luth-sft"
     type: "chat_template"
+    split: "luth_smoltalk2"
+  - path: "kurakurai/luth-sft"
+    type: "chat_template"
     split: "luth_croissantllm"
   - path: "kurakurai/luth-sft"
     type: "chat_template"
@@ -60,9 +63,6 @@ datasets:
   - path: "kurakurai/luth-sft"
     type: "chat_template"
     split: "luth_tulu3_persona_instruct"
-  - path: "kurakurai/luth-sft"
-    type: "chat_template"
-    split: "luth_smoltalk2"
 
 
 eot_tokens:
