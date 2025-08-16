@@ -2,5 +2,11 @@ awscli
 pydantic
 wandb==0.19.11
 mpi4py==4.1.0
-axolotl[deepspeed]==0.11.0
-flash_attn==2.7.4.post1
+accelerate
+regex
+tokenizers
+safetensors
+addict
+bitsandbytes
+peft
+trl

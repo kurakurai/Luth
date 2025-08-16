@@ -1,7 +1,6 @@
-base_model: "Qwen/Qwen3-0.6B"
+base_model: "LiquidAI/LFM2-350M"
 
-output_dir: "trained_model/luth"
-hub_model_id: "kurakurai/Luth-0.6B-fr"
+output_dir: "trained_model/"
 deepspeed: configs/train/zero1.json # Multi-GPU training config
 
 flash_attention: true
@@ -39,26 +38,29 @@ micro_batch_size: 6
 
 use_wandb: true
 wandb_project: "Kurakura AI"
-wandb_name: luth-run-qwen3-0.6b
+wandb_name: luth-lfm2-350m
 
 chat_template: "tokenizer_default"
 datasets:
-  - path: "kurakurai/tulu-3-persona-math-fr"
-    type: "chat_template"
-    split: "train"
-  - path: "kurakurai/tulu-3-persona-instruct-fr"
-    type: "chat_template"
-    split: "train"
   - path: "kurakurai/luth-sft"
     type: "chat_template"
-    split: "train"
-  - path: "kurakurai/Scholar-fr"
+    split: "luth_scholar"
+  - path: "kurakurai/luth-sft"
     type: "chat_template"
-    split: "Scholar_all"
-    field_messages: conversations
-  - path: "kurakurai/openhermes-fr-filtered"
+    split: "luth_croissantllm"
+  - path: "kurakurai/luth-sft"
     type: "chat_template"
-    split: "train"
+    split: "luth_aya_dataset"
+  - path: "kurakurai/luth-sft"
+    type: "chat_template"
+    split: "luth_tulu3_persona_math"
+  - path: "kurakurai/luth-sft"
+    type: "chat_template"
+    split: "luth_openhermes"
+  - path: "kurakurai/luth-sft"
+    type: "chat_template"
+    split: "luth_tulu3_persona_instruct"
+
 
 dataloader_prefetch_factor: 8
 dataloader_num_workers: 2
