@@ -1,10 +1,9 @@
-ray==2.47.1
+numpy
+ray==2.48.0
 wandb==0.19.11
 more-itertools==10.7.0
 lighteval[extended_tasks]==0.10.0
-vllm==0.9.2
 datasets==3.5.0
+transformers==4.55.0
 git+https://github.com/arcee-ai/mergekit.git
-git+https://github.com/paulpak58/vllm.git@lfm2_v2
-git+https://github.com/flashinfer-ai/flashinfer.git --no-deps
-transformers<4.54.0
+

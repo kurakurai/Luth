@@ -38,8 +38,9 @@ env:
 	@uv venv $(EVAL_VENV) --python $(PYTHON_VERSION) --no-project
 	@export VLLM_USE_PRECOMPILED=1
 	@uv pip install -r requirements.txt --python $(EVAL_VENV)/bin/python
+	@uv pip install git+https://github.com/paulpak58/vllm.git@lfm2_v2 --python $(EVAL_VENV)/bin/python
+	@uv pip install git+https://github.com/flashinfer-ai/flashinfer.git --no-deps --python $(EVAL_VENV)/bin/python 
 	@echo "Evaluation environment ready."
-
 # Run supervised fine-tuning
 sft:
 	@$(TRAIN_VENV)/bin/accelerate launch $(SFT_SCRIPT) --config $(SFT_CONFIG)
