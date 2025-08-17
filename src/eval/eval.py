@@ -5,7 +5,6 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..",
 from patch_lighteval.patch import patch_reasoning, patch_prefix_caching
 from lighteval.models.vllm.vllm_model import VLLMModelConfig
 patch_reasoning()
-patch_prefix_caching()
 
 from lighteval.logging.evaluation_tracker import EvaluationTracker
 from lighteval.pipeline import ParallelismManager, Pipeline, PipelineParameters
