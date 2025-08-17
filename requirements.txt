@@ -5,4 +5,4 @@ more-itertools==10.7.0
 lighteval[extended_tasks]==0.10.0
 datasets==3.5.0
 transformers==4.55.0
-git+https://github.com/arcee-ai/mergekit.git@lfm2-support
+git+https://github.com/arcee-ai/mergekit.git
