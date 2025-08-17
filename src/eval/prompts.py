@@ -18,7 +18,7 @@ def prompt_ifeval_fr(line, task_name: str = None):
 
 
 # gpqa-diamond-fr prompt function
-def gpqa_diamond_fr_instruct(line, task_name: str = None):
+def gpqa_fr_instruct(line, task_name: str = None):
     """Prompt template adapted from simple-evals: https://github.com/openai/simple-evals/blob/83ed7640a7d9cd26849bcb3340125002ef14abbe/common.py#L14"""
     gold_index = random.randint(0, 3)
     choices = [

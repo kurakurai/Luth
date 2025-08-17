@@ -101,13 +101,50 @@ ifeval_fr_task = LightevalTaskConfig(
 gpqa_diamond_fr_task = LightevalTaskConfig(
     name="gpqa_fr:diamond",
     suite=["community"],
-    prompt_function=custom_prompt.gpqa_diamond_fr_instruct,
+    prompt_function=custom_prompt.gpqa_fr_instruct,
     hf_repo="le-leadboard/gpqa-fr",
     hf_subset="gpqa_diamond",
     hf_avail_splits=["train"],
     evaluation_splits=["train"],
     few_shots_split="train",
     few_shots_select="random",
+    generation_size=1024 if not enable_thinking else 8192,
+    metric=[
+        custom_metric.gpqa_instruct_pass_fr_at_1_1n,
+    ],
+    stop_sequence=[],
+    trust_dataset=True,
+    version=1,
+)
+
+gpqa_extended_fr_task = LightevalTaskConfig(
+    name="gpqa_fr:extended",
+    suite=["community"],
+    prompt_function=custom_prompt.gpqa_fr_instruct,
+    hf_repo="le-leadboard/gpqa-fr",
+    hf_subset="gpqa_extended",
+    hf_avail_splits=["train"],
+    evaluation_splits=["train"],
+    few_shots_split=None,
+    few_shots_select=None,
+    generation_size=1024 if not enable_thinking else 8192,
+    metric=[
+        custom_metric.gpqa_instruct_pass_fr_at_1_1n,
+    ],
+    stop_sequence=[],
+    trust_dataset=True,
+    version=1,
+)
+gpqa_main_fr_task = LightevalTaskConfig(
+    name="gpqa_fr:main",
+    suite=["community"],
+    prompt_function=custom_prompt.gpqa_fr_instruct,
+    hf_repo="le-leadboard/gpqa-fr",
+    hf_subset="gpqa_main",
+    hf_avail_splits=["train"],
+    evaluation_splits=["train"],
+    few_shots_split=None,
+    few_shots_select=None,
     generation_size=1024 if not enable_thinking else 8192,
     metric=[
         custom_metric.gpqa_instruct_pass_fr_at_1_1n,
@@ -725,6 +762,43 @@ gpqa_diamond_instruct_lighteval_fixed = LightevalTaskConfig(
     version=1,
 )
 
+gpqa_extended_instruct_lighteval_fixed = LightevalTaskConfig(
+    name="gpqa:extended",
+    suite=["community"],
+    prompt_function=default_prompts.gpqa_instruct,
+    hf_repo="Idavidrein/gpqa",
+    hf_subset="gpqa_extended",
+    hf_avail_splits=["train"],
+    evaluation_splits=["train"],
+    few_shots_split=None,
+    few_shots_select=None,
+    generation_size=1024 if not enable_thinking else 8192,
+    metric=[
+        Metrics.gpqa_instruct_pass_at_1_1n,
+    ],
+    stop_sequence=[],
+    trust_dataset=True,
+    version=1,
+)
+gpqa_main_instruct_lighteval_fixed = LightevalTaskConfig(
+    name="gpqa:main",
+    suite=["community"],
+    prompt_function=default_prompts.gpqa_instruct,
+    hf_repo="Idavidrein/gpqa",
+    hf_subset="gpqa_main",
+    hf_avail_splits=["train"],
+    evaluation_splits=["train"],
+    few_shots_split=None,
+    few_shots_select=None,
+    generation_size=1024 if not enable_thinking else 8192,
+    metric=[
+        Metrics.gpqa_instruct_pass_at_1_1n,
+    ],
+    stop_sequence=[],
+    trust_dataset=True,
+    version=1,
+)
+
 aime24_fixed = LightevalTaskConfig(
     name="aime24",
     suite=["community"],
@@ -750,6 +824,8 @@ TASKS_TABLE = [
     math_lvl5_fr_task,
     ifeval_fr_task,
     gpqa_diamond_fr_task,
+    gpqa_extended_fr_task,
+    gpqa_main_fr_task,
     boolq_fr_task,
     mmlu_fr_task,
     musr_fr_team_allocation,
@@ -785,5 +861,7 @@ TASKS_TABLE = [
     hellaswag_fr_task,
     math_500_fixed,
     gpqa_diamond_instruct_lighteval_fixed,
+    gpqa_extended_instruct_lighteval_fixed,
+    gpqa_main_instruct_lighteval_fixed,
     aime24_fixed,
 ]
