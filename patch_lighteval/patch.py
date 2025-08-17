@@ -216,3 +216,81 @@ def patch_reasoning():
     except Exception as e:
         raise RuntimeError(f"Failed to patch enable_thinking: {str(e)}")
 
+
+
+
+from typing import Coroutine, Optional
+from lighteval.models.vllm.vllm_model import VLLMModelConfig
+from vllm import LLM
+def _create_auto_model(self, config: VLLMModelConfig) -> Optional[LLM]:
+    """
+    Creates an instance of the pretrained HF model.
+
+    Args:
+        pretrained (str): The name or path of the pretrained model.
+        revision (str): The revision of the model.
+        subfolder (Optional[str], optional): The subfolder within the model. Defaults to None.
+        max_memory (Optional[dict], optional): The maximum memory to allocate for the model per GPU. Defaults to None.
+        device_map (Optional[dict], optional): The device mapping for the model. Defaults to None.
+        torch_dtype (Optional[Union[str, torch.dtype]], optional): The torch data type for the model. Defaults to None.
+        quantization_config (Optional[Union[BitsAndBytesConfig, GPTQConfig]], optional): The quantization configuration for the model. Defaults to None.
+        trust_remote_code (bool, optional): Whether to trust remote code. Defaults to False.
+        cache_dir (str, optional): The cache directory for the model. Defaults to "/scratch".
+
+    Returns:
+        transformers.PreTrainedModel: The created auto model instance.
+    """
+    self.model_args = {
+        "model": config.model_name,
+        "gpu_memory_utilization": config.gpu_memory_utilization,
+        "revision": config.revision + (f"/{config.subfolder}" if config.subfolder is not None else ""),
+        "dtype": config.dtype,
+        "trust_remote_code": config.trust_remote_code,
+        "tensor_parallel_size": config.tensor_parallel_size,
+        "pipeline_parallel_size": config.pipeline_parallel_size,
+        "max_model_len": self._max_length,
+        "swap_space": 4,
+        "seed": int(config.seed),
+        "max_num_seqs": int(config.max_num_seqs),
+        "max_num_batched_tokens": int(config.max_num_batched_tokens),
+        "enable_prefix_caching": False        
+        }
+
+    if config.quantization is not None:
+        self.model_args["quantization"] = config.quantization
+    if config.load_format is not None:
+        self.model_args["load_format"] = config.load_format
+
+    if config.data_parallel_size > 1:
+        self.model_args["distributed_executor_backend"] = "ray"
+        self._batch_size = "auto"
+        return None
+
+    model = LLM(**self.model_args)
+
+    # If the max_length can't get extracted from the config, it will be inferred from the model
+    # Inferring from the tokenizer will cause vllm to bug for models with mismatches between model
+    # config and tk config, like mistralai/Mistral-7B-v0.1
+    if self._max_length is None:
+        self._max_length = model.llm_engine.model_config.max_seq_len_to_capture
+
+    return model
+
+def patch_prefix_caching():
+    try:
+        from lighteval.models.vllm.vllm_model import VLLMModel
+        
+        function = inspect.getsource(_create_auto_model)
+        function = textwrap.dedent(function)
+        original_function = getattr(VLLMModel, "_create_auto_model")
+        local_ns = {}
+        exec(function, original_function.__globals__, local_ns)
+        VLLMModel._create_auto_model = local_ns["_create_auto_model"]
+        sys.modules[
+            "lighteval.models.vllm.vllm_model"
+        ].VLLMModel._create_auto_model = VLLMModel._create_auto_model
+
+        print("Lighteval prefix caching successfully patched.")
+    
+    except Exception as e:
+        raise RuntimeError(f"Failed to patch prefix caching: {str(e)}")

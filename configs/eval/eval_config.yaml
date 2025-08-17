@@ -3,12 +3,14 @@ model:
   dtype: "bfloat16"
   gpu_memory_utilization: 0.9
   max_model_length: 16384
+  
 
 model_parameters:
   temperature: 0.0
   max_new_tokens: 8192
 
 extras:
+  enable_prefix_caching: false
   enable_thinking: false
   answer_token: "</think>"  
   use_chat_template: true

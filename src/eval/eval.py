@@ -1,17 +1,13 @@
 import sys
 import os
 
-os.environ["VLLM_USE_V1"] = "1"
-os.environ["VLLM_ATTENTION_BACKEND"] = "FLASHINFER"
-
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
-from patch_lighteval.patch import patch_reasoning
-
+from patch_lighteval.patch import patch_reasoning, patch_prefix_caching
+from lighteval.models.vllm.vllm_model import VLLMModelConfig
 patch_reasoning()
-
+patch_prefix_caching()
 
 from lighteval.logging.evaluation_tracker import EvaluationTracker
-from lighteval.models.vllm.vllm_model import VLLMModelConfig
 from lighteval.pipeline import ParallelismManager, Pipeline, PipelineParameters
 from lighteval.models.utils import GenerationParameters
 from pathlib import Path
@@ -77,7 +73,12 @@ def main(args):
             "enable_thinking is set to True, but answer_token is not provided in the config."
         )
     
-    extras_yaml["enable_prefix_caching"] = False
+    if "LFM2" in model_yaml.get("model_name", ""):
+        os.environ["VLLM_USE_V1"] = "1"
+        os.environ["VLLM_ATTENTION_BACKEND"] = "FLASHINFER"
+    
+    if not extras_yaml.get("enable_prefix_caching"):
+        patch_prefix_caching()
 
     # Prepare model configuration
     config_kwargs = dict(model_yaml)
@@ -86,7 +87,6 @@ def main(args):
     )
 
     model_config = VLLMModelConfig(**config_kwargs)
-
     # Set up pipeline parameters
     tasks_path = Path(f"src/eval/tasks.py")
     pipeline_params = PipelineParameters(
