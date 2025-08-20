@@ -1,4 +1,4 @@
-base_model: "LiquidAI/LFM2-700M"
+base_model: "LiquidAI/LFM2-1.2B"
 
 output_dir: "trained_model/"
 deepspeed: configs/train/zero1.json # Multi-GPU training config
@@ -8,13 +8,13 @@ train_on_inputs: false
 train_on_eos: 'turn'
 sample_packing: true
 chunked_cross_entropy: true
-learning_rate: 2e-5
+learning_rate: 5e-5
 sequence_len: 16384  # larger sequence length improves packing efficiency for more tokens/sec
 gradient_checkpointing: true # tradeoff reduced VRAM for increased time
-optimizer: "adamw_torch_8bit"
+optimizer: "adamw_torch_fused"
 lr_scheduler: "cosine"
 warmup_ratio: 0.1
-weight_decay: 0.01
+weight_decay: 0.0
 bf16: true
 fp16: false
 tf32: false
@@ -23,22 +23,17 @@ num_epochs: 3
 save_strategy: "epoch"
 logging_steps: 1
 
-# lora_r: 16
-# lora_alpha: 32
-# lora_target_modules:
-#   - "q_proj"
-#   - "k_proj"
-#   - "v_proj"
-#   - "o_proj"
+val_set_size: 0.05
+evals_per_epoch: 2
 
 # Batch size per gpu = micro_batch_size * gradient_accumulation_steps
-gradient_accumulation_steps: 4
-micro_batch_size: 6
+gradient_accumulation_steps: 2
+micro_batch_size: 10
 # eval_batch_size: 4
 
 use_wandb: true
 wandb_project: "Kurakura AI"
-wandb_name: luth-lfm2-350m
+wandb_name: luth-lfm2-1.2B
 
 chat_template: "tokenizer_default"
 datasets:
