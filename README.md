@@ -11,6 +11,9 @@
   <a href="https://huggingface.co/collections/kurakurai/luth-datasets-6881f936cad0a68de7a21044" target="_blank" style="margin: 2px;">
     <img alt="Luth SFT Dataset" src="https://img.shields.io/badge/%F0%9F%A4%97%20HuggingFace-Dataset-ffc107?color=ffc107&logoColor=white" style="display: inline-block; vertical-align: middle;"/>
   </a>
+  <a href="[https://huggingface.co/blog/MaxLSB/luth](https://arxiv.org/pdf/2510.05846)" target="_blank" style="margin: 2px;">
+  <img alt="Arxiv" src="https://img.shields.io/badge/%F0%9F%93%96%20Blog-Luth-007acc?color=007acc&logoColor=red" style="display: inline-block; vertical-align: middle;"/>
+  </a>
   <a href="https://huggingface.co/blog/MaxLSB/luth" target="_blank" style="margin: 2px;">
   <img alt="Luth Blog" src="https://img.shields.io/badge/%F0%9F%93%96%20Blog-Luth-007acc?color=007acc&logoColor=white" style="display: inline-block; vertical-align: middle;"/>
 </a>
