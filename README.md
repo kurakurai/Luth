@@ -94,9 +94,10 @@ mergekit-yaml configs/mergekit/merge_linear.yaml ./merged-output --cuda
 
 ```bibtex
 @misc{luth2025kurakurai,
-  title   = {Luth: Efficient French Specialization for Small Language Models and Cross-Lingual Transfer},
-  author  = {Maxence Lasbordes, Sinoué Gad},
-  year    = {2025},
+  title        = {Luth: Efficient French Specialization for Small Language Models and Cross-Lingual Transfer},
+  author       = {Lasbordes, Maxence and Gad, Sinoué},
+  year         = {2025},
   howpublished = {\url{https://arxiv.org/abs/2510.05846}},
+  note         = {arXiv:2510.05846}
 }
 ```
