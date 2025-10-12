@@ -92,12 +92,11 @@ mergekit-yaml configs/mergekit/merge_linear.yaml ./merged-output --cuda
 
 ## Citation
 
-We are currently working on a paper!
 ```bibtex
 @misc{luth2025kurakurai,
-  title   = {Luth},
+  title   = {Luth: Efficient French Specialization for Small Language Models and Cross-Lingual Transfer},
   author  = {Maxence Lasbordes, Sinoué Gad},
   year    = {2025},
-  howpublished = {\url{https://github.com/kurakurai/Luth}},
+  howpublished = {\url{https://arxiv.org/abs/2510.05846}},
 }
 ```
